@@ -1,10 +1,9 @@
-<?xml version="1.0"?>
-<!--
+/**
 Software License Agreement (BSD)
 
-\file      description.launch
-\authors   Paul Bovbel <pbovbel@clearpathrobotics.com>, Prasenjit Mukherjee <pmukherj@clearpathrobotics.com>
-\copyright Copyright (c) 2015, Clearpath Robotics, Inc., All rights reserved.
+\file      husky_status.hpp
+\authors   Tony Baltovski <tbaltovski@clearpathrobotics.com>
+\copyright Copyright (c) 2023, Clearpath Robotics, Inc., All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that
 the following conditions are met:
@@ -22,12 +21,30 @@ DIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
 OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
 ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
--->
-<launch>
-  
-  <!--- Run Move Base -->  
-  <include file="$(find husky_navigation)/launch/move_base.launch">
-    <arg name="no_static_map" value="true"/>
-  </include>
-  
-</launch>
+*/
+
+#ifndef HUSKY_BASE__HUSKY_STATUS_HPP
+#define HUSKY_BASE__HUSKY_STATUS_HPP
+
+#include "rclcpp/rclcpp.hpp"
+
+#include "husky_msgs/msg/husky_status.hpp"
+
+namespace husky_status
+{
+
+class HuskyStatus
+: public rclcpp::Node
+{
+  public:
+  explicit HuskyStatus();
+
+  void publish_status(husky_msgs::msg::HuskyStatus status_msg);
+
+  private:
+  rclcpp::Publisher<husky_msgs::msg::HuskyStatus>::SharedPtr pub_status_;
+};
+
+}
+
+#endif  // HUSKY_BASE__HUSKY_STATUS_HPP

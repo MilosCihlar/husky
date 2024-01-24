@@ -17,6 +17,8 @@
 #include "rclcpp/rclcpp.hpp"
 
 #include "husky_base/horizon_legacy_wrapper.h"
+#include "husky_base/husky_status.hpp"
+#include "husky_msgs/msg/husky_status.hpp"
 
 using namespace std::chrono_literals;
 
@@ -55,12 +57,16 @@ private:
   void writeCommandsToHardware();
   void limitDifferentialSpeed(double &diff_speed_left, double &diff_speed_right);
   void updateJointsFromHardware();
+  void readStatusFromHardware();
   uint8_t isLeft(const std::string &str);
 
   // ROS Parameters
   std::string serial_port_;
   double polling_timeout_;
   double wheel_diameter_, max_accel_, max_speed_;
+
+  std::shared_ptr<husky_status::HuskyStatus> status_node_;
+  husky_msgs::msg::HuskyStatus status_msg_;
 
   // Store the command for the robot
   std::vector<double> hw_commands_;

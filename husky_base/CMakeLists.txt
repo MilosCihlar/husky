@@ -34,6 +34,7 @@ add_library(
   husky_hardware
   SHARED
   src/husky_hardware.cpp
+  src/husky_status.cpp
   src/horizon_legacy_wrapper.cpp
   src/horizon_legacy/crc.cpp
   src/horizon_legacy/Logger.cpp
@@ -57,6 +58,7 @@ ament_target_dependencies(
   hardware_interface
   pluginlib
   rclcpp
+  husky_msgs
 )
 
 

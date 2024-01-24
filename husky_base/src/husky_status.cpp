@@ -1,16 +1,15 @@
-<?xml version="1.0"?>
-<!--
+/**
 Software License Agreement (BSD)
 
-\file      description.launch
-\authors   Paul Bovbel <pbovbel@clearpathrobotics.com>, Devon Ash <dash@clearpathrobotics.com>
-\copyright Copyright (c) 2015, Clearpath Robotics, Inc., All rights reserved.
+\file      husky_status.cpp
+\authors   Tony Baltovski <tbaltovski@clearpathrobotics.com>
+\copyright Copyright (c) 2023, Clearpath Robotics, Inc., All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that
 the following conditions are met:
  * Redistributions of source code must retain the above copyright notice, this list of conditions and the
    following disclaimer.
- * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the
+ * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the 
    following disclaimer in the documentation and/or other materials provided with the distribution.
  * Neither the name of Clearpath Robotics nor the names of its contributors may be used to endorse or promote
    products derived from this software without specific prior written permission.
@@ -22,19 +21,30 @@ DIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
 OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
 ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
--->
-<launch>
+*/
 
-  <arg name="robot_namespace" default="/"/>
-  <arg name="laser_enabled" default="$(optenv HUSKY_LMS1XX_ENABLED false)"/>
-  <arg name="realsense_enabled" default="$(optenv HUSKY_REALSENSE_ENABLED false)"/>
-  <arg name="urdf_extras" default="$(optenv HUSKY_URDF_EXTRAS)"/>
 
-  <param name="robot_description" command="$(find xacro)/xacro '$(find husky_description)/urdf/husky.urdf.xacro'
-    robot_namespace:=$(arg robot_namespace)
-    laser_enabled:=$(arg laser_enabled)
-    realsense_enabled:=$(arg realsense_enabled)
-    urdf_extras:=$(arg urdf_extras)
-    " />
+#include "husky_base/husky_status.hpp"
 
-</launch>
+/**
+ * @brief Construct a new HuskyStatus object
+ * 
+ */
+husky_status::HuskyStatus::HuskyStatus()
+: Node("husky_status_node")
+{
+  pub_status_= create_publisher<husky_msgs::msg::HuskyStatus>(
+    "status",
+    rclcpp::SensorDataQoS());
+}
+
+
+/**
+ * @brief Publish Husky Status message
+ * 
+ * @param status_msg Message to publish
+ */
+void husky_status::HuskyStatus::publish_status(husky_msgs::msg::HuskyStatus status_msg)
+{
+  pub_status_->publish(status_msg);
+}
